@@ -4,6 +4,7 @@ import {AgGridAngular} from 'ag-grid-angular';
 import {map, tap} from 'rxjs/operators';
 import {Item, SearchListResponse, ViewVideoItem} from './models';
 import {SearchListService} from './search-list.service';
+import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,14 @@ import {SearchListService} from './search-list.service';
 })
 export class AppComponent implements OnInit {
 
+  @ViewChild('agGrid', {static: true}) agGrid: AgGridAngular;
+
+  rowData: Observable<ViewVideoItem[]>;
+
   columnDefs = [
     {
       headerName: '', field: 'thumbnail', sortable: true, filter: true, checkboxSelection: true,
-      cellRenderer: (params) => { // TODO: increase image size
+      cellRenderer: (params) => {
         return `<img alt="image" src="${params.value}">`;
       }
     },
@@ -34,8 +39,6 @@ export class AppComponent implements OnInit {
     {headerName: 'Description', field: 'description', sortable: true, filter: true}
   ];
 
-  @ViewChild('agGrid', {static: true}) agGrid: AgGridAngular;
-  rowData: Observable<ViewVideoItem[]>;
 
   autoGroupColumnDef = {
     headerName: 'Model',
@@ -44,6 +47,16 @@ export class AppComponent implements OnInit {
     cellRendererParams: {
       checkbox: true
     }
+  };
+
+  statusBar = {
+    statusPanels: [
+      {statusPanel: 'countStatusBarComponent'}
+    ]
+  };
+
+  frameworkComponents = {
+    countStatusBarComponent: CountStatusBarComponent
   };
 
   constructor(private searchListService: SearchListService) {
@@ -69,5 +82,4 @@ export class AppComponent implements OnInit {
   setRowHeight(height: number) {
     this.agGrid.gridOptions.rowHeight = height;
   }
-
 }
