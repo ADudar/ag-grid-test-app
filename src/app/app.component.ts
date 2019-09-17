@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AgGridAngular} from 'ag-grid-angular';
+import {map, tap} from 'rxjs/operators';
+import {Item, SearchListResponse, ViewVideoItem} from './models';
+import {SearchListService} from './search-list.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +12,30 @@ import {AgGridAngular} from 'ag-grid-angular';
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild('agGrid', {static: true}) agGrid: AgGridAngular;
-
   columnDefs = [
-    {headerName: 'make', field: 'make', sortable: true, filter: true, checkboxSelection: true },
-    {headerName: 'model', field: 'model', sortable: true, filter: true },
-    {headerName: 'price', field: 'price', sortable: true, filter: true }
+    {
+      headerName: '', field: 'thumbnail', sortable: true, filter: true, checkboxSelection: true,
+      cellRenderer: (params) => { // TODO: increase image size
+        return `<img alt="image" src="${params.value}">`;
+      }
+    },
+    {headerName: 'Published on', field: 'publishedAt', sortable: true, filter: true},
+    {
+      headerName: 'Video Title', field: 'title', sortable: true, filter: true,
+      cellRenderer: (params) => {
+        const videoUrl = `https://www.youtube.com/watch?v=`;
+        const {name, videoId} = params.value;
+        const fullVideoUrl = videoUrl + videoId;
+        return `
+        <a href="${fullVideoUrl}" target="_blank">${name}</a>`;
+      }
+    },
+
+    {headerName: 'Description', field: 'description', sortable: true, filter: true}
   ];
+
+  @ViewChild('agGrid', {static: true}) agGrid: AgGridAngular;
+  rowData: Observable<ViewVideoItem[]>;
 
   autoGroupColumnDef = {
     headerName: 'Model',
@@ -27,26 +46,28 @@ export class AppComponent implements OnInit {
     }
   };
 
+  constructor(private searchListService: SearchListService) {
+  }
 
-  // rowData = [
-  //   { make: 'Toyota', model: 'Celica', price: 35000 },
-  //   { make: 'Ford', model: 'Mondeo', price: 32000 },
-  //   { make: 'Porsche', model: 'Boxter', price: 72000 }
-  // ];
-  rowData: Observable<any>;
-
-  constructor(private http: HttpClient) {
-
+  static mapToViewFunction(list: SearchListResponse): ViewVideoItem[] {
+    return list.items.map((item: Item) => ({
+      title: {name: item.snippet.title, videoId: item.id.videoId},
+      publishedAt: item.snippet.publishedAt,
+      description: item.snippet.description,
+      thumbnail: item.snippet.thumbnails.default.url,
+    }));
   }
 
   ngOnInit() {
-    this.rowData = this.http.get('https://api.myjson.com/bins/ly7d1');
+    this.rowData = this.searchListService.getVideos()
+      .pipe(
+        tap(() => this.setRowHeight(90)),
+        map(AppComponent.mapToViewFunction)
+      );
   }
 
-  getSelectedRows() {
-    const selectedNodes = this.agGrid.api.getSelectedNodes();
-    const selectedData = selectedNodes.map( node => node.data );
-    const selectedDataStringPresentation = selectedData.map( node => node.make + ' ' + node.model).join(', ');
-    alert(`Selected nodes: ${selectedDataStringPresentation}`);
+  setRowHeight(height: number) {
+    this.agGrid.gridOptions.rowHeight = height;
   }
+
 }
