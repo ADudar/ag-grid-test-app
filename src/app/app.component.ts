@@ -7,7 +7,7 @@ import {SearchListService} from './search-list.service';
 import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
 import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
 import {SelectionToggleComponent} from './selection-toggle/selection-toggle.component';
-import {ColumnApi, GridApi} from 'ag-grid-community';
+import {ColumnApi, GridApi, RowNode} from 'ag-grid-community';
 
 @Component({
   selector: 'app-root',
@@ -64,7 +64,9 @@ export class AppComponent implements OnInit {
       countSelectedRecordsComponent: CountSelectedRecordsComponent,
       selectionToggleComponent: SelectionToggleComponent,
     },
-    rowSelection: 'multiple'
+    rowSelection: 'multiple',
+    popupParent: document.querySelector('body'),
+    getContextMenuItems: () => this.contextMenuItems()
   };
 
   constructor(private searchListService: SearchListService) {
@@ -91,6 +93,52 @@ export class AppComponent implements OnInit {
 
   setRowHeight(height: number) {
     this.agGrid.gridOptions.rowHeight = height;
+  }
+
+  contextMenuItems() {
+    const openInNewTabAction = () => {
+      const cell = this.agGrid.api.getFocusedCell();
+      const rowNode: RowNode = this.agGrid.gridOptions.api.getDisplayedRowAtIndex(cell.rowIndex);
+      const videoUrl = `https://www.youtube.com/watch?v=`; // TODO extract to constants
+      const {name, videoId} = this.agGrid.api.getValue('title', rowNode);
+      window.open(videoUrl + videoId, '_blank');
+    };
+    const openInNewTabItem = {
+      name: 'Open in new tab',
+      shortcut: 'Ctrl+Shift+Click',
+      icon: this.getIcon(),
+      action: openInNewTabAction
+    };
+    return [
+      'copy',
+      'copyWithHeaders',
+      'paste',
+      'separator',
+      openInNewTabItem
+    ];
+  }
+
+  private getIcon() {
+    return `
+         <svg
+         style="width: 16px; height: 16px; fill: #7F8C8D; margin-bottom: -2px;"
+         viewBox="0 0 24 24"
+         focusable="false"
+         aria-hidden="true">
+           <use xlink:href="#new-window"></use>
+         </svg>
+         <svg
+         style="display: none"
+         version="1.1"
+         xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink" hidden>
+           <symbol id="new-window" viewBox="0 0 24 24">
+              <g transform="scale(0.0234375 0.0234375)">
+                <path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z"></path>
+              </g>
+          </symbol>
+         </svg>
+        `;
   }
 
   onGridReady(event: { api: GridApi, columnApi: ColumnApi, type: string }) {
