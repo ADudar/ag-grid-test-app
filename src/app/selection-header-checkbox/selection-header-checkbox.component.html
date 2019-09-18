@@ -3,7 +3,7 @@
     *ngIf="isCheckboxVisible"
     for="selectAll">
     <input
-      (ngModelChange)="onChange()"
+      (change)="onChange()"
       [(ngModel)]="selectAll"
       id="selectAll"
       style="display: none;"
