@@ -8,20 +8,28 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
 import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
+import {SelectionToggleComponent} from './selection-toggle/selection-toggle.component';
+
+const agGridComponents = [
+  CountStatusBarComponent,
+  CountSelectedRecordsComponent,
+  SelectionToggleComponent
+];
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    CountStatusBarComponent,
-    CountSelectedRecordsComponent
+    ...agGridComponents
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgGridModule.withComponents([CountStatusBarComponent, CountSelectedRecordsComponent])
+    AgGridModule.withComponents(agGridComponents)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

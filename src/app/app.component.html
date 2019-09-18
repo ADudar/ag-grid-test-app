@@ -1,14 +1,11 @@
 <ag-grid-angular
   #agGrid
+  (gridReady)="onGridReady($event)"
   style="width: 100%; height: 500px;"
   class="ag-theme-balham"
   [rowData]="rowData | async"
-  [columnDefs]="columnDefs"
-  [autoGroupColumnDef]="autoGroupColumnDef"
-  rowSelection="multiple"
-  [enableRangeSelection]="true"
-  [frameworkComponents]="frameworkComponents"
-  [statusBar]="statusBar"
+  [gridOptions]="gridOptions"
+  id="videos-grid"
 >
 </ag-grid-angular>
 

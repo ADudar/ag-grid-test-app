@@ -7,7 +7,7 @@ import {Component} from '@angular/core';
 })
 export class CountSelectedRecordsComponent {
 
-  count: null;
+  count = 0;
   private params: any; // TODO: add type
 
   agInit(params: any): void {

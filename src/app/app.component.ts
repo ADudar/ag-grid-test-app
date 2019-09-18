@@ -6,6 +6,8 @@ import {Item, SearchListResponse, ViewVideoItem} from './models';
 import {SearchListService} from './search-list.service';
 import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
 import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
+import {SelectionToggleComponent} from './selection-toggle/selection-toggle.component';
+import {ColumnApi, GridApi} from 'ag-grid-community';
 
 @Component({
   selector: 'app-root',
@@ -18,48 +20,51 @@ export class AppComponent implements OnInit {
 
   rowData: Observable<ViewVideoItem[]>;
 
-  columnDefs = [
-    {
-      headerName: '', field: 'thumbnail', sortable: true, filter: true, checkboxSelection: true,
-      cellRenderer: (params) => {
-        return `<img alt="image" src="${params.value}">`;
-      }
+  gridOptions = {
+    defaultColDef: {
+      resizable: true
     },
-    {headerName: 'Published on', field: 'publishedAt', sortable: true, filter: true},
-    {
-      headerName: 'Video Title', field: 'title', sortable: true, filter: true,
-      cellRenderer: (params) => {
-        const videoUrl = `https://www.youtube.com/watch?v=`;
-        const {name, videoId} = params.value;
-        const fullVideoUrl = videoUrl + videoId;
-        return `
+    columnDefs: [
+      {headerName: '', field: 'selection', checkboxSelection: true, width: 40},
+      {
+        headerName: '', field: 'thumbnail', sortable: true, filter: true,
+        cellRenderer: (params) => {
+          return `<img alt="image" src="${params.value}">`;
+        }
+      },
+      {headerName: 'Published on', field: 'publishedAt', sortable: true, filter: true},
+      {
+        headerName: 'Video Title', field: 'title', sortable: true, filter: true, width: 500,
+        cellRenderer: (params) => {
+          const videoUrl = `https://www.youtube.com/watch?v=`;
+          const {name, videoId} = params.value;
+          const fullVideoUrl = videoUrl + videoId;
+          return `
         <a href="${fullVideoUrl}" target="_blank">${name}</a>`;
-      }
+        }
+      },
+
+      {
+        headerName: 'Description', field: 'description', sortable: true, filter: true,
+        cellRenderer: (params) => {
+          return `<div style="white-space: normal;">${params.value}</div>`;
+        }
+      },
+    ],
+    suppressRowClickSelection: true,
+    statusBar: {
+      statusPanels: [
+        {statusPanel: 'selectionToggleComponent'},
+        {statusPanel: 'countStatusBarComponent'},
+        {statusPanel: 'countSelectedRecordsComponent'}
+      ]
     },
-
-    {headerName: 'Description', field: 'description', sortable: true, filter: true}
-  ];
-
-
-  autoGroupColumnDef = {
-    headerName: 'Model',
-    field: 'model',
-    cellRenderer: 'agGroupCellRenderer',
-    cellRendererParams: {
-      checkbox: true
-    }
-  };
-
-  statusBar = {
-    statusPanels: [
-      {statusPanel: 'countStatusBarComponent'},
-      {statusPanel: 'countSelectedRecordsComponent'}
-    ]
-  };
-
-  frameworkComponents = {
-    countStatusBarComponent: CountStatusBarComponent,
-    countSelectedRecordsComponent: CountSelectedRecordsComponent
+    frameworkComponents: {
+      countStatusBarComponent: CountStatusBarComponent,
+      countSelectedRecordsComponent: CountSelectedRecordsComponent,
+      selectionToggleComponent: SelectionToggleComponent,
+    },
+    rowSelection: 'multiple'
   };
 
   constructor(private searchListService: SearchListService) {
@@ -77,7 +82,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.rowData = this.searchListService.getVideos()
       .pipe(
-        tap(() => this.setRowHeight(90)),
+        tap(() => {
+          this.setRowHeight(90);
+        }),
         map(AppComponent.mapToViewFunction)
       );
   }
@@ -85,4 +92,8 @@ export class AppComponent implements OnInit {
   setRowHeight(height: number) {
     this.agGrid.gridOptions.rowHeight = height;
   }
+
+  onGridReady(event: { api: GridApi, columnApi: ColumnApi, type: string }) {
+  }
+
 }
