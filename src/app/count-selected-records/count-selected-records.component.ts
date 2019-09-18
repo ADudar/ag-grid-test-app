@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 
+import {Params} from '../models';
+
 @Component({
   selector: 'app-count-selected-records',
   templateUrl: './count-selected-records.component.html',
@@ -8,15 +10,15 @@ import {Component} from '@angular/core';
 export class CountSelectedRecordsComponent {
 
   count = 0;
-  private params: any; // TODO: add type
+  private params: Params;
 
-  agInit(params: any): void {
+  agInit(params: Params): void {
     this.params = params;
 
     this.params.api.addEventListener('selectionChanged', this.onSelectionChange.bind(this));
   }
 
-  onSelectionChange() {
+  onSelectionChange(): void {
     this.count = this.params.api.getSelectedRows().length;
   }
 }

@@ -2,13 +2,15 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AgGridAngular} from 'ag-grid-angular';
 import {map, tap} from 'rxjs/operators';
-import {Item, SearchListResponse, ViewVideoItem} from './models';
+
+import {Item, SearchListResponse, ViewTitle, ViewVideoItem} from './models';
 import {SearchListService} from './search-list.service';
 import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
 import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
 import {SelectionToggleComponent} from './selection-toggle/selection-toggle.component';
-import {ColumnApi, GridApi, RowNode} from 'ag-grid-community';
+import {ColumnApi, GridApi, GridOptions, RowNode} from 'ag-grid-community';
 import {SelectionHeaderCheckboxComponent} from './selection-header-checkbox/selection-header-checkbox.component';
+import {videoUrl} from './constants';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,7 @@ export class AppComponent implements OnInit {
 
   rowData: Observable<ViewVideoItem[]>;
 
-  gridOptions = {
+  gridOptions: GridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -36,10 +38,9 @@ export class AppComponent implements OnInit {
         suppressMenu: true,
         customHeaderCheckboxSelection: (params) => {
           const displayedColumns = params.columnApi.getAllDisplayedColumns();
-          const thisIsFirstColumn = displayedColumns[0] === params.column;
-          return thisIsFirstColumn;
+          return displayedColumns[0] === params.column;
         }
-      },
+      } as any,
       {
         headerName: '', field: 'thumbnail', sortable: true, filter: true,
         cellRenderer: (params) => {
@@ -49,8 +50,7 @@ export class AppComponent implements OnInit {
       {headerName: 'Published on', field: 'publishedAt', sortable: true, filter: true},
       {
         headerName: 'Video Title', field: 'title', sortable: true, filter: true, width: 500,
-        cellRenderer: (params) => {
-          const videoUrl = `https://www.youtube.com/watch?v=`;
+        cellRenderer: (params: { value: ViewTitle }) => {
           const {name, videoId} = params.value;
           const fullVideoUrl = videoUrl + videoId;
           return `
@@ -81,7 +81,8 @@ export class AppComponent implements OnInit {
     },
     rowSelection: 'multiple',
     popupParent: document.querySelector('body'),
-    getContextMenuItems: () => this.contextMenuItems()
+    getContextMenuItems: () => this.getContextMenuItems(),
+    context: this
   };
 
   constructor(private searchListService: SearchListService) {
@@ -96,26 +97,26 @@ export class AppComponent implements OnInit {
     }));
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.rowData = this.searchListService.getVideos()
       .pipe(
         tap(() => {
-          this.setRowHeight(90);
+          const defaultColumnHeight = 90;
+          this.setRowHeight(defaultColumnHeight);
         }),
         map(AppComponent.mapToViewFunction)
       );
   }
 
-  setRowHeight(height: number) {
+  setRowHeight(height: number): void {
     this.agGrid.gridOptions.rowHeight = height;
   }
 
-  contextMenuItems() {
+  getContextMenuItems(): any[] {
     const openInNewTabAction = () => {
       const cell = this.agGrid.api.getFocusedCell();
       const rowNode: RowNode = this.agGrid.gridOptions.api.getDisplayedRowAtIndex(cell.rowIndex);
-      const videoUrl = `https://www.youtube.com/watch?v=`; // TODO extract to constants
-      const {name, videoId} = this.agGrid.api.getValue('title', rowNode);
+      const {name, videoId} = this.agGrid.api.getValue('title', rowNode) as ViewTitle;
       window.open(videoUrl + videoId, '_blank');
     };
     const openInNewTabItem = {
@@ -133,7 +134,11 @@ export class AppComponent implements OnInit {
     ];
   }
 
-  private getIcon() {
+  onGridReady(event: { api: GridApi, columnApi: ColumnApi, type: string }): void {
+    // console.log(event);
+  }
+
+  private getIcon(): string {
     return `
          <svg
          style="width: 16px; height: 16px; fill: #7F8C8D; margin-bottom: -2px;"
@@ -154,9 +159,6 @@ export class AppComponent implements OnInit {
           </symbol>
          </svg>
         `;
-  }
-
-  onGridReady(event: { api: GridApi, columnApi: ColumnApi, type: string }) {
   }
 
 }

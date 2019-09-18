@@ -1,4 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Params} from '../models';
 
 @Component({
   selector: 'app-selection-header-checkbox',
@@ -7,7 +8,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 })
 export class SelectionHeaderCheckboxComponent {
 
-  params: any; // TODO: add type
+  params: Params;
   ascSort: string;
   descSort: string;
   noSort: string;
@@ -22,20 +23,19 @@ export class SelectionHeaderCheckboxComponent {
     return false;
   }
 
-  agInit(params): void {
+  agInit(params: Params): void {
     this.params = params;
-    this.params.api.selectionHeaderCheckboxComponent = this;
-
     params.column.addEventListener('sortChanged', this.onSortChanged.bind(this));
     params.api.addEventListener('selectionChanged', this.onSelectionChanged.bind(this));
     this.onSortChanged();
+    this.onSelectionChanged();
   }
 
-  onMenuClicked() {
+  onMenuClicked(): void {
     this.params.showColumnMenu(this.menuButton.nativeElement);
   }
 
-  onSortChanged() {
+  onSortChanged(): void {
     this.ascSort = this.descSort = this.noSort = 'inactive';
     if (this.params.column.isSortAscending()) {
       this.ascSort = 'active';
@@ -46,15 +46,15 @@ export class SelectionHeaderCheckboxComponent {
     }
   }
 
-  onSelectionChanged() {
+  onSelectionChanged(): void {
     this.selectAll = this.params.api.getSelectedRows().length === this.params.api.getDisplayedRowCount();
   }
 
-  onSortRequested(order, event) {
+  onSortRequested(order, event): void {
     this.params.setSort(order, event.shiftKey);
   }
 
-  onChange() {
+  onChange(): void {
     if (this.selectAll) {
       this.params.api.selectAll();
     } else {

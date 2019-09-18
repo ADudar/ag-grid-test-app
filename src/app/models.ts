@@ -1,3 +1,6 @@
+import {ColumnApi, GridApi} from 'ag-grid-community';
+import {AngularFrameworkComponentWrapper} from 'ag-grid-angular';
+
 export class SearchListResponse {
   kind: string;
   etag: string;
@@ -63,4 +66,18 @@ export class ViewVideoItem {
   publishedAt: Date;
   description: string;
   thumbnail: string;
+}
+
+export class ViewTitle {
+  name: string;
+  videoId: string;
+}
+
+export class Params {
+  api: GridApi;
+  columnApi: ColumnApi;
+  context: any;
+  frameworkComponentWrapper: AngularFrameworkComponentWrapper;
+
+  [key: string]: any;
 }

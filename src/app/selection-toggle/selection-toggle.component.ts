@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 
+import {Params} from '../models';
+
 @Component({
   selector: 'app-selection-toggle',
   templateUrl: './selection-toggle.component.html',
@@ -7,14 +9,14 @@ import {Component} from '@angular/core';
 })
 export class SelectionToggleComponent {
 
-  private params: any; // TODO: add type
+  private params: Params;
 
-  agInit(params: any): void {
+  agInit(params: Params): void {
     this.params = params;
   }
 
-  changeCheckoxVisibility() {
-    const currentVisibility = this.params.columnApi.getColumn('selection').visible;
+  changeCheckoxVisibility(): void {
+    const currentVisibility = (this.params.columnApi.getColumn('selection') as any).visible;
     this.params.columnApi.setColumnVisible('selection', !currentVisibility);
     if (currentVisibility) {
       this.params.api.deselectAll();
