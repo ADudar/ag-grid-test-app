@@ -5,6 +5,7 @@ import {map, tap} from 'rxjs/operators';
 import {Item, SearchListResponse, ViewVideoItem} from './models';
 import {SearchListService} from './search-list.service';
 import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
+import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
 
 @Component({
   selector: 'app-root',
@@ -51,12 +52,14 @@ export class AppComponent implements OnInit {
 
   statusBar = {
     statusPanels: [
-      {statusPanel: 'countStatusBarComponent'}
+      {statusPanel: 'countStatusBarComponent'},
+      {statusPanel: 'countSelectedRecordsComponent'}
     ]
   };
 
   frameworkComponents = {
-    countStatusBarComponent: CountStatusBarComponent
+    countStatusBarComponent: CountStatusBarComponent,
+    countSelectedRecordsComponent: CountSelectedRecordsComponent
   };
 
   constructor(private searchListService: SearchListService) {

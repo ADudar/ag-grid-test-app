@@ -7,17 +7,19 @@ import 'ag-grid-enterprise';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
+import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CountStatusBarComponent
+    CountStatusBarComponent,
+    CountSelectedRecordsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgGridModule.withComponents([CountStatusBarComponent])
+    AgGridModule.withComponents([CountStatusBarComponent, CountSelectedRecordsComponent])
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,7 +8,7 @@ import {Component} from '@angular/core';
 export class CountStatusBarComponent {
 
   private params: any; // TODO: add type
-  private count: null;
+  count: null;
 
   agInit(params: any): void {
     this.params = params;
