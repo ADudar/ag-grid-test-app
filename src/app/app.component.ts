@@ -8,6 +8,7 @@ import {CountStatusBarComponent} from './count-status-bar/count-status-bar.compo
 import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
 import {SelectionToggleComponent} from './selection-toggle/selection-toggle.component';
 import {ColumnApi, GridApi, RowNode} from 'ag-grid-community';
+import {SelectionHeaderCheckboxComponent} from './selection-header-checkbox/selection-header-checkbox.component';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +23,23 @@ export class AppComponent implements OnInit {
 
   gridOptions = {
     defaultColDef: {
-      resizable: true
+      sortable: true,
+      resizable: true,
+      filter: true,
     },
+    suppressMenuHide: true,
     columnDefs: [
-      {headerName: '', field: 'selection', checkboxSelection: true, width: 40},
+      {
+        headerName: '', field: 'selection', checkboxSelection: true, width: 40,
+        sortable: false,
+        filter: false,
+        suppressMenu: true,
+        customHeaderCheckboxSelection: (params) => {
+          const displayedColumns = params.columnApi.getAllDisplayedColumns();
+          const thisIsFirstColumn = displayedColumns[0] === params.column;
+          return thisIsFirstColumn;
+        }
+      },
       {
         headerName: '', field: 'thumbnail', sortable: true, filter: true,
         cellRenderer: (params) => {
@@ -63,6 +77,7 @@ export class AppComponent implements OnInit {
       countStatusBarComponent: CountStatusBarComponent,
       countSelectedRecordsComponent: CountSelectedRecordsComponent,
       selectionToggleComponent: SelectionToggleComponent,
+      agColumnHeader: SelectionHeaderCheckboxComponent
     },
     rowSelection: 'multiple',
     popupParent: document.querySelector('body'),

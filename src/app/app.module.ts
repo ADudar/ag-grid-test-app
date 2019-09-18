@@ -9,24 +9,28 @@ import {AppComponent} from './app.component';
 import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
 import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
 import {SelectionToggleComponent} from './selection-toggle/selection-toggle.component';
+import {SelectionHeaderCheckboxComponent} from './selection-header-checkbox/selection-header-checkbox.component';
+import {FormsModule} from '@angular/forms';
 
 const agGridComponents = [
   CountStatusBarComponent,
   CountSelectedRecordsComponent,
-  SelectionToggleComponent
+  SelectionToggleComponent,
+  SelectionHeaderCheckboxComponent
 ];
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ...agGridComponents
+    ...agGridComponents,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgGridModule.withComponents(agGridComponents)
+    AgGridModule.withComponents(agGridComponents),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
