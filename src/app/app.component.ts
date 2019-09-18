@@ -11,6 +11,7 @@ import {SelectionToggleComponent} from './selection-toggle/selection-toggle.comp
 import {ColumnApi, GridApi, GridOptions, RowNode} from 'ag-grid-community';
 import {SelectionHeaderCheckboxComponent} from './selection-header-checkbox/selection-header-checkbox.component';
 import {videoUrl} from './constants';
+import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
 @Component({
   selector: 'app-root',
@@ -47,7 +48,21 @@ export class AppComponent implements OnInit {
           return `<img alt="image" src="${params.value}">`;
         }
       },
-      {headerName: 'Published on', field: 'publishedAt', sortable: true, filter: true},
+      {
+        headerName: 'Published on', field: 'publishedAt', sortable: true, filter: true,
+        cellRenderer: (params) => {
+          const options: DateTimeFormatOptions = {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+          };
+          const date = new Date(params.value);
+          return `<div>${date.toLocaleDateString('en-Us', options)}</div>`;
+        }
+      },
       {
         headerName: 'Video Title', field: 'title', sortable: true, filter: true, width: 500,
         cellRenderer: (params: { value: ViewTitle }) => {
