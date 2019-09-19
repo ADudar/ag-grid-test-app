@@ -24,8 +24,12 @@ import {VideoService} from '../../services/video.service';
 export class GridComponent implements OnInit {
 
   @ViewChild('agGrid', {static: true}) agGrid: AgGridAngular;
+
   rowData: Observable<ViewItem[]>;
+
   gridOptions: GridOptions = {
+    paginationAutoPageSize: true,
+    suppressCellSelection: true,
     defaultColDef: {
       sortable: true,
       resizable: true,
