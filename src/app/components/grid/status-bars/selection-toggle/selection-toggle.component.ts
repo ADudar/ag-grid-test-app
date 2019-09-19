@@ -9,6 +9,7 @@ import {Params} from '../../../../models/models';
 export class SelectionToggleComponent {
 
   private params: Params;
+  selectedNodes = [];
 
   agInit(params: Params): void {
     this.params = params;
@@ -18,7 +19,10 @@ export class SelectionToggleComponent {
     event.preventDefault();
     const visible = this.getCurrentVisibility();
     if (visible) {
-    this.params.api.deselectAll();
+      this.selectedNodes = this.params.api.getSelectedNodes();
+      this.params.api.deselectAll();
+    } else {
+      this.selectedNodes.forEach(node => node.setSelected(true));
     }
     this.setColumnVisibility('selection', !visible);
   }
