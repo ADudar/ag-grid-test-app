@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 
 import {Params} from '../../../../models/models';
 
+/**
+ * Panel component total records count for grid
+ */
 @Component({
   selector: 'app-records-count',
   templateUrl: './records-count.component.html',
@@ -17,6 +20,9 @@ export class RecordsCountComponent {
     this.params.api.addEventListener('modelUpdated', this.onModelUpdate.bind(this));
   }
 
+  /**
+   * Get total row count
+   */
   onModelUpdate(): void {
     this.count = this.params.api.getModel().getRowCount();
   }

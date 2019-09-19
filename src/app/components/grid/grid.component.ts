@@ -16,6 +16,9 @@ import {titleColumn} from './col-defs/title-column';
 import {descriptionColumn} from './col-defs/description-column';
 import {VideoService} from '../../services/video.service';
 
+/**
+ * Represent grid component with it configuration
+ */
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
@@ -25,8 +28,14 @@ export class GridComponent implements OnInit {
 
   @ViewChild('agGrid', {static: true}) agGrid: AgGridAngular;
 
+  /**
+   * Grid data
+   */
   rowData: Observable<ViewItem[]>;
 
+  /**
+   * Grid configuration
+   */
   gridOptions: GridOptions = {
     paginationAutoPageSize: true,
     suppressCellSelection: true,
@@ -67,6 +76,10 @@ export class GridComponent implements OnInit {
               private videoService: VideoService) {
   }
 
+  /**
+   * Get data to display from response
+   * @param list
+   */
   static mapVideoToView(list: SearchListResponse): ViewItem[] {
     return list.items.map((item: Item) => {
       return new ViewItem(
@@ -81,6 +94,9 @@ export class GridComponent implements OnInit {
     });
   }
 
+  /**
+   * Icon for conext menu 'open in new tab'
+   */
   static getTabIcon(): string {
     return `
          <svg
@@ -112,6 +128,10 @@ export class GridComponent implements OnInit {
       );
   }
 
+  /**
+   * Build custom context menu
+   * @param params
+   */
   getContextMenuItems(params): any[] {
     console.log(params);
     const openInNewTabAction = () => {
@@ -132,10 +152,17 @@ export class GridComponent implements OnInit {
     ];
   }
 
+  /**
+   * Fit all column to screen width
+   */
   sizeToFit(): void {
     this.agGrid.api.sizeColumnsToFit();
   }
 
+  /**
+   * Grid ready event
+   * @param event
+   */
   onGridReady(event: { api: GridApi, columnApi: ColumnApi, type: string }): void {
     this.sizeToFit();
   }

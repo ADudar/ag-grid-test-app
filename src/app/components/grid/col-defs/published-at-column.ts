@@ -1,5 +1,8 @@
 import {DateComponent} from '../cell-renderers/date/date.component';
 
+/**
+ * Published at column configuration
+ */
 export const publishedAtColumn = {
   headerName: 'Published on',
   field: 'publishedAt',

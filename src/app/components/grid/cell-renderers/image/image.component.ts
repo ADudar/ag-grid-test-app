@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {ICellRendererAngularComp} from 'ag-grid-angular';
 
+/**
+ * Image cell component for grid
+ */
 @Component({
   selector: 'app-image-cell',
   templateUrl: './image.component.html',

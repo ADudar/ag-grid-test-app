@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 
 import {Params} from '../../../../models/models';
 
+/**
+ * Panel component selected records for grid
+ */
 @Component({
   selector: 'app-selected-records-count',
   templateUrl: './selected-records-count.component.html',
@@ -18,6 +21,9 @@ export class SelectedRecordsCountComponent {
     this.params.api.addEventListener('selectionChanged', this.onSelectionChange.bind(this));
   }
 
+  /**
+   * Recalculate selected rows on selection change
+   */
   onSelectionChange(): void {
     this.count = this.params.api.getSelectedRows().length;
   }

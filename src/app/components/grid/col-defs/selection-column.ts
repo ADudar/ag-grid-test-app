@@ -1,3 +1,6 @@
+/**
+ * Selection column configuration
+ */
 export const selectionColumn = {
   headerName: '',
   field: 'selection',
@@ -8,7 +11,7 @@ export const selectionColumn = {
   width: 40,
   suppressSizeToFit: true,
   hide: true,
-  headerComponentParams: (params) => {
+  headerComponentParams: (params) => { // condition to display checkbox at header
     const firstColumnIndex = 0;
     const displayedColumns = params.columnApi.getAllDisplayedColumns();
     return displayedColumns[firstColumnIndex] === params.column;

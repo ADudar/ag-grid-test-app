@@ -1,6 +1,9 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {Params} from '../../../../models/models';
 
+/**
+ * Header checkbox component for grid
+ */
 @Component({
   selector: 'app-header-checkbox-selection',
   templateUrl: './checkbox.component.html',
@@ -44,6 +47,9 @@ export class CheckboxComponent {
     }
   }
 
+  /**
+   * Update header checkbox state
+   */
   onSelectionChanged(): void {
     this.selectAll = this.params.api.getSelectedRows().length === this.params.api.getDisplayedRowCount();
   }

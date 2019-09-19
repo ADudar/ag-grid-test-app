@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {ICellRendererAngularComp} from 'ag-grid-angular';
 
+/**
+ * Date cell component for grid
+ */
 @Component({
   selector: 'app-date-cell',
   templateUrl: './date.component.html',
@@ -21,6 +24,6 @@ export class DateComponent implements ICellRendererAngularComp {
   }
 
   private setDate(value: string): void {
-      this.date = new Date(value);
+    this.date = new Date(value);
   }
 }

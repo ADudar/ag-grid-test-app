@@ -3,6 +3,9 @@ import {ICellRendererAngularComp} from 'ag-grid-angular';
 import {Params} from '../../../../models/models';
 import {VideoService} from '../../../../services/video.service';
 
+/**
+ * Link cell component for grid
+ */
 @Component({
   selector: 'app-link-cell',
   templateUrl: './link.component.html',

@@ -17,6 +17,9 @@ import {LinkComponent} from './components/grid/cell-renderers/link/link.componen
 import {DateComponent} from './components/grid/cell-renderers/date/date.component';
 import {ImageComponent} from './components/grid/cell-renderers/image/image.component';
 
+/**
+ * ag-grid components
+ */
 const agGridComponents = [
   RecordsCountComponent,
   SelectedRecordsCountComponent,
