@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AgGridAngular} from 'ag-grid-angular';
 import {Observable} from 'rxjs';
 import {Item, SearchListResponse, ViewItem} from '../../models/models';
-import {ColumnApi, GridApi, GridOptions, RowNode} from 'ag-grid-community';
+import {ColumnApi, GridApi, GridOptions} from 'ag-grid-community';
 import {RecordsCountComponent} from './status-bars/records-count/records-count.component';
 import {SelectedRecordsCountComponent} from './status-bars/selected-records-count/selected-records-count.component';
 import {SelectionToggleComponent} from './status-bars/selection-toggle/selection-toggle.component';
@@ -112,7 +112,6 @@ export class GridComponent implements OnInit {
     console.log(params);
     const openInNewTabAction = () => {
       const cell = this.agGrid.api.getFocusedCell();
-      const rowNode: RowNode = this.agGrid.gridOptions.api.getDisplayedRowAtIndex(cell.rowIndex);
       window.open(this.videoService.getVideoUrlById(params.node.data.videoId), '_blank');
     };
     const openInNewTabItem = {
