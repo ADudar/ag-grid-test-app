@@ -6,17 +6,25 @@ import 'ag-grid-enterprise';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {CountStatusBarComponent} from './count-status-bar/count-status-bar.component';
-import {CountSelectedRecordsComponent} from './count-selected-records/count-selected-records.component';
-import {SelectionToggleComponent} from './selection-toggle/selection-toggle.component';
-import {SelectionHeaderCheckboxComponent} from './selection-header-checkbox/selection-header-checkbox.component';
+import {RecordsCountComponent} from './components/grid/status-bars/records-count/records-count.component';
+import {SelectedRecordsCountComponent} from './components/grid/status-bars/selected-records-count/selected-records-count.component';
+import {SelectionToggleComponent} from './components/grid/status-bars/selection-toggle/selection-toggle.component';
+import {CheckboxComponent} from './components/grid/cell-renderers/checkbox/checkbox.component';
 import {FormsModule} from '@angular/forms';
+import {GridComponent} from './components/grid/grid.component';
+import {ContainerComponent} from './components/container/container.component';
+import {LinkComponent} from './components/grid/cell-renderers/link/link.component';
+import {DateComponent} from './components/grid/cell-renderers/date/date.component';
+import {ImageComponent} from './components/grid/cell-renderers/image/image.component';
 
 const agGridComponents = [
-  CountStatusBarComponent,
-  CountSelectedRecordsComponent,
+  RecordsCountComponent,
+  SelectedRecordsCountComponent,
   SelectionToggleComponent,
-  SelectionHeaderCheckboxComponent
+  CheckboxComponent,
+  LinkComponent,
+  DateComponent,
+  ImageComponent,
 ];
 
 
@@ -24,6 +32,8 @@ const agGridComponents = [
   declarations: [
     AppComponent,
     ...agGridComponents,
+    GridComponent,
+    ContainerComponent,
   ],
   imports: [
     BrowserModule,

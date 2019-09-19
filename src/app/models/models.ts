@@ -1,5 +1,4 @@
 import {ColumnApi, GridApi} from 'ag-grid-community';
-import {AngularFrameworkComponentWrapper} from 'ag-grid-angular';
 
 export class SearchListResponse {
   kind: string;
@@ -11,23 +10,15 @@ export class SearchListResponse {
 }
 
 export class Item {
-  kind: ItemKind;
+  kind: string;
   etag: string;
   id: ID;
   snippet: Snippet;
 }
 
 export class ID {
-  kind: IDKind;
+  kind: string;
   videoId: string;
-}
-
-export enum IDKind {
-  YoutubeVideo = 'youtube#video',
-}
-
-export enum ItemKind {
-  YoutubeSearchResult = 'youtube#searchResult',
 }
 
 export class Snippet {
@@ -37,11 +28,7 @@ export class Snippet {
   description: string;
   thumbnails: Thumbnails;
   channelTitle: string;
-  liveBroadcastContent: LiveBroadcastContent;
-}
-
-export enum LiveBroadcastContent {
-  None = 'none',
+  liveBroadcastContent: string;
 }
 
 export class Thumbnails {
@@ -61,11 +48,18 @@ export class PageInfo {
   resultsPerPage: number;
 }
 
-export class ViewVideoItem {
-  title: { name: string, videoId: string };
+export class ViewItem {
+
+  title: string;
   publishedAt: Date;
   description: string;
   thumbnail: string;
+  videoId: string;
+
+  constructor(init: Partial<ViewItem>) {
+    Object.assign(this, init);
+  }
+
 }
 
 export class ViewTitle {
@@ -77,7 +71,5 @@ export class Params {
   api: GridApi;
   columnApi: ColumnApi;
   context: any;
-  frameworkComponentWrapper: AngularFrameworkComponentWrapper;
-
   [key: string]: any;
 }

@@ -1,12 +1,12 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {Params} from '../models';
+import {Params} from '../../../../models/models';
 
 @Component({
-  selector: 'app-selection-header-checkbox',
-  templateUrl: './selection-header-checkbox.component.html',
-  styleUrls: ['./selection-header-checkbox.component.scss']
+  selector: 'app-header-checkbox-selection',
+  templateUrl: './checkbox.component.html',
+  styleUrls: ['./checkbox.component.scss']
 })
-export class SelectionHeaderCheckboxComponent {
+export class CheckboxComponent {
 
   params: Params;
   ascSort: string;
@@ -27,8 +27,6 @@ export class SelectionHeaderCheckboxComponent {
     this.params = params;
     params.column.addEventListener('sortChanged', this.onSortChanged.bind(this));
     params.api.addEventListener('selectionChanged', this.onSelectionChanged.bind(this));
-    this.onSortChanged();
-    this.onSelectionChanged();
   }
 
   onMenuClicked(): void {
@@ -54,7 +52,8 @@ export class SelectionHeaderCheckboxComponent {
     this.params.setSort(order, event.shiftKey);
   }
 
-  onChange(): void {
+  onChange(event): void {
+    event.preventDefault();
     if (this.selectAll) {
       this.params.api.selectAll();
     } else {

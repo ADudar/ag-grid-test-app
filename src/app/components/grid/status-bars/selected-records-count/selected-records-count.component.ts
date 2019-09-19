@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 
-import {Params} from '../models';
+import {Params} from '../../../../models/models';
 
 @Component({
-  selector: 'app-count-selected-records',
-  templateUrl: './count-selected-records.component.html',
-  styleUrls: ['./count-selected-records.component.scss']
+  selector: 'app-selected-records-count',
+  templateUrl: './selected-records-count.component.html',
+  styleUrls: ['./selected-records-count.component.scss']
 })
-export class CountSelectedRecordsComponent {
+export class SelectedRecordsCountComponent {
 
   count = 0;
   private params: Params;
