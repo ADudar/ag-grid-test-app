@@ -96,7 +96,8 @@
               "src/styles.scss"
             ],
             "scripts": []
-          }
+          },
+          "codeCoverage": true
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",

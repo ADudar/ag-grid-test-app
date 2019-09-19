@@ -16,9 +16,9 @@ export class CheckboxComponent {
   @ViewChild('menuButton', {read: ElementRef, static: false}) public menuButton;
 
   get isCheckboxVisible(): boolean {
-    const {customHeaderCheckboxSelection} = this.params.column.colDef;
-    if (typeof customHeaderCheckboxSelection === 'function') {
-      return customHeaderCheckboxSelection(this.params);
+    const {headerComponentParams} = this.params.column.colDef;
+    if (typeof headerComponentParams === 'function') {
+      return headerComponentParams(this.params);
     }
     return false;
   }

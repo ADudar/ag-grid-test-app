@@ -8,9 +8,10 @@ export const selectionColumn = {
   width: 40,
   suppressSizeToFit: true,
   hide: true,
-  customHeaderCheckboxSelection: (params) => {
+  headerComponentParams: (params) => {
     const firstColumnIndex = 0;
     const displayedColumns = params.columnApi.getAllDisplayedColumns();
     return displayedColumns[firstColumnIndex] === params.column;
-  }
+  },
 };
+

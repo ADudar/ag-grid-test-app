@@ -22,7 +22,7 @@ export class ID {
 }
 
 export class Snippet {
-  publishedAt: Date;
+  publishedAt: string;
   channelId: string;
   title: string;
   description: string;
@@ -51,7 +51,7 @@ export class PageInfo {
 export class ViewItem {
 
   title: string;
-  publishedAt: Date;
+  publishedAt: string;
   description: string;
   thumbnail: string;
   videoId: string;

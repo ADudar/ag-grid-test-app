@@ -111,7 +111,6 @@ export class GridComponent implements OnInit {
   getContextMenuItems(params): any[] {
     console.log(params);
     const openInNewTabAction = () => {
-      const cell = this.agGrid.api.getFocusedCell();
       window.open(this.videoService.getVideoUrlById(params.node.data.videoId), '_blank');
     };
     const openInNewTabItem = {
